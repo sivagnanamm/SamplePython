@@ -1,0 +1,66 @@
+version: '1'
+services:
+  service1-service:
+    build:
+      context: ./Service1
+      dockerfile: Dockerfile
+    image: SamplePython/service1
+    ports:
+      - 8080:80
+    container_name: service1-service
+    environment:
+      - ENV=Local
+      - SERVICE_NAME=service1
+    volumes:
+      - ./Service1:/service1
+    restart: always
+
+  service2-service:
+    build:
+      context: ./Service2
+      dockerfile: Dockerfile
+    image: SamplePython/service2
+    ports:
+      - 8081:80
+    container_name: service2-service
+    environment:
+      - ENV=Local
+      - SERVICE_NAME=service2
+    volumes:
+      - ./Service2:/service2
+    restart: always
+
+  service3-service:
+    build:
+      context: ./Service3
+      dockerfile: Dockerfile
+    image: SamplePython/service3
+    ports:
+      - 8082:80
+    container_name: service3-service
+    environment:
+      - ENV=Local
+      - SERVICE_NAME=service3
+    volumes:
+      - ./Service1:/service1
+    restart: always
+
+  nginx-service:
+    build:
+      context: ./Nginx
+      dockerfile: Dockerfile
+    image: SamplePython/nginx
+    ports:
+      - 80:80
+    container_name: nginx-service
+    environment:
+      - ENV=Local
+      - PORT=80
+    depends_on: [service1-service, service2-service, service3-service
+    ]
+    restart: always
+
+
+#docker-compose build
+#docker-compose up -d
+#docker-compose down
